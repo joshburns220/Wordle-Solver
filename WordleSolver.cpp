@@ -63,6 +63,15 @@ int main()
         cout << result[i] << " ";
     }
 
+
+
+    // pause the program here ...
+
+    std::cout << endl << "Press Enter to exit..." << std::endl;
+
+    std::string dummy;
+    std::getline(std::cin, dummy);  // Wait for the user to press Enter
+
     return 0;
 }
 
@@ -115,6 +124,8 @@ void promptTwo() {
     cout << "Step 2/3. Enter yellow letters according to place value." << endl;
     cout << "If there are no yellow letters at that index, enter asterisk (*)." << endl;
     cout << "Use only capital letters." << endl;
+    cout << "Enter the yellow letters appearing at the first index (letter 1/5):" << endl;
+
 }
 
 

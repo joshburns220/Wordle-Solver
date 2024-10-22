@@ -21,6 +21,8 @@ using namespace std;
 
 vector<string> solution_set;
 
+vector<int> find_char_indices(const string& str, char ch);
+
 
 vector<string> possible_solutions(string green, vector<string> yellow, string gray) {
 
@@ -61,15 +63,36 @@ vector<string> possible_solutions(string green, vector<string> yellow, string gr
 
 	// right now this can't handle index-sensitive rejections. that's a feature i need to add
 
+
+
 	for (int i = 0; i < solution_set.size(); i++) {
-		bool should_push = true;  // Assume the string is valid unless rejected
+		bool should_push = true; 
 
 		for (int j = 0; j < yellow.size(); j++) {
 			for (int k = 0; k < yellow[j].size(); k++) {
 				// If solution_set[i] does not have yellow[j][k] as a character, reject it
-				if (count(solution_set[i].begin(), solution_set[i].end(), yellow[j][k]) == 0 && yellow[j][k] != '*') {
+				int numberOfYellows = static_cast<int>(count(solution_set[i].begin(), solution_set[i].end(), yellow[j][k]));		// count technically does not return int type
+				if (numberOfYellows == 0 && yellow[j][k] != '*') {
 					should_push = false;  // Mark the string as rejected
 					break;  // Break out of the current loop for this character
+				} else {
+					// do index checking here
+					vector<int> check = find_char_indices(solution_set[i], yellow[j][k]);		// returns indices where yellowjk
+																				// appears in s_set
+					for (int l : check) {
+						if (yellow[l].find(yellow[j][k]) != string::npos) {
+							should_push = false;
+							break;
+						}
+					}
+
+					// vector<int> check2 = find_char_indices(yellow[j], yellow[j][k]);
+					// what you actually want is to find every index of yellow in which yellow[j][k] appears...
+					// ... and reject if any int in check matches any of them!
+
+					// ranged for loop over check; for every int l in check, if yellow[l] contains yellow[j][k], REJECT
+					
+
 				}
 			}
 
@@ -116,3 +139,14 @@ vector<string> possible_solutions(string green, vector<string> yellow, string gr
 	return solution_set;
 }
 
+vector<int> find_char_indices(const string& str, char ch) {
+	vector<int> indices;
+
+	for (int i = 0; i < str.size(); i++) {
+		if (str[i] == ch) {
+			indices.push_back(i);  // Store the index
+		}
+	}
+
+	return indices;
+}
